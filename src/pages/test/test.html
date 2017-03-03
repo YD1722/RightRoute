@@ -1,0 +1,36 @@
+<ion-header>
+
+  <ion-navbar >
+    <ion-title>Test</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="closeModal()" icon-only><ion-icon name="close"></ion-icon></button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-card #map id="map">
+
+    <ion-fab right top>
+      <button ion-fab>
+        <ion-icon name="pin"></ion-icon>
+      </button>
+    </ion-fab>
+  </ion-card>
+
+  <ion-card>
+
+
+    <ion-item>
+      <ion-icon name="football" item-left large></ion-icon>
+      <h2>{{root.name}}</h2>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon name="wine" item-left large ></ion-icon>
+      <p>{{root.path}}</p>
+    </ion-item>
+  </ion-card>
+</ion-content>
