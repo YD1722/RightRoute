@@ -1,13 +1,50 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-searchbar (input)="getItems($event)"></ion-searchbar>
+    <ion-searchbar (input)="showStations($event)"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-item *ngFor="let item of items">
-      {{ item }}
-    </ion-item>
-  </ion-list>
+
+
+  <div *ngIf="searchQuery">
+    <ion-list class="suggestions">
+      <ion-item *ngFor="let station of stations">
+        <ion-buttons>
+          <button color="dark" ion-button clear full (click)="getStation(station.id)">{{ station.name }}</button>
+        </ion-buttons>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <div *ngIf="station">
+
+    <ion-card *ngIf="notLoadMap">
+
+      <img src="http://placehold.it/350x150">
+      <ion-fab right top>
+        <button ion-fab mini (click)="initMap()"><ion-icon name="refresh"></ion-icon></button>
+      </ion-fab>
+
+    </ion-card>
+
+
+
+
+
+    <ion-card>
+
+
+      <ion-item>
+        <ion-icon name="football" item-left large></ion-icon>
+        <h2></h2>
+      </ion-item>
+
+      <ion-item>
+        <ion-icon name="wine" item-left large ></ion-icon>
+        <p></p>
+      </ion-item>
+    </ion-card>
+  </div>
+
 </ion-content>

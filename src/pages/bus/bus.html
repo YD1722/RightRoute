@@ -5,11 +5,13 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
+  <div  *ngIf="searchQuery">
+  <ion-list class="suggestions">
     <ion-item *ngFor="let item of items">
       <ion-buttons>
-      <button color="dark" ion-button clear full (click)="searchBus(item)">{{ item }}</button>
+      <button color="dark" ion-button clear full (click)="searchBus(item.name)">{{ item.name }}</button>
       </ion-buttons>
     </ion-item>
   </ion-list>
+  </div>
 </ion-content>

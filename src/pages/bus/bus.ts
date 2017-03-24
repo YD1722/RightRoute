@@ -4,44 +4,48 @@ import { Http ,Headers} from '@angular/http';
 import 'rxjs/add/operator/map';
 import {TestPage} from '../../pages/test/test';
 
+import{BusRoutes} from '../../mockData/BusRoutes';
+import {Routes} from '../../providers/routes';
+
 @Component({
   selector: 'page-bus',
   templateUrl: 'bus.html'
 })
 export class BusPage {
 
-  searchQuery: string = '';
+  searchQuery: string=null ;
   items:any=[];
 
   constructor(public http:Http,public loadCtrl:LoadingController,public navCtrl:NavController,
-  public modalCtrl:ModalController) {
+  public modalCtrl:ModalController,  public routeService:Routes) {
 
     this.initializeItems();
-  }
+    }
 
   initializeItems() {
-    this.items = [
-      "100","101","140"
-    ];
+    this.items=this.routeService.getRoutes();
   }
 
+//search function dropdown
   getItems(ev: any) {
-    // Reset items back to all of the items
-    this.initializeItems();
 
-    // set val to the value of the searchbar
-    let val = ev.target.value;
+  // Reset items back to all of the items
+  this.initializeItems();
 
-    // if the value is an empty string don't filter the items
-    if (val && val.trim() != '') {
-      this.items = this.items.filter((item) => {
-        return (item.toLowerCase().indexOf(val.toLowerCase()) > -1);
-      })
-    }
-  };
+  // set val to the value of the searchbar
+  let val = ev.target.value;
+  this.searchQuery= val;
+  // if the value is an empty string don't filter the items
+  if (val && val.trim() != '') {
+    this.items = this.items.filter((item) => {
+      return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
+    })
+  }
+}
 
   searchBus(item){
     this.searchBusRoute(item).then(data=>{
+      //console.log(data);
       let routeModal=this.modalCtrl.create(TestPage,{
         root:data
       });
