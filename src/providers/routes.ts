@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 import {BusRoutes} from '../mockData/BusRoutes';
 
@@ -12,12 +12,32 @@ import {BusRoutes} from '../mockData/BusRoutes';
 @Injectable()
 export class Routes {
 
-  constructor(public http: Http) {
+  constructor(private http:Http) {
     console.log('Hello Routes Provider');
   }
 
   getRoutes():any[]{
     return BusRoutes;
+  }
+
+  findBusRoutes(p1,p2){
+    let searchOptions = {
+      p1:p1,
+      p2:p2
+    }
+
+    return new Promise(resolve => {
+      let headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+
+      this.http.post('http://localhost:8080/api/bus_routes', JSON.stringify(searchOptions), {headers: headers})
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+
+        });
+
+    });
   }
 
 }

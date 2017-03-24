@@ -21,13 +21,11 @@ export class TestPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,public viewCtrl:ViewController) {
     this.root= navParams.get('root')[0];
-
   }
 
-  ionViewDidLoad() {
+  loadMap(){
     this.initMap();
   }
-
   closeModal(){
     this.viewCtrl.dismiss();
   }

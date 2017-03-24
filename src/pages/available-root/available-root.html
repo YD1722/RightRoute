@@ -7,7 +7,7 @@
     <ion-row>
       <ion-col col-9>
         <ion-item>
-      <ion-input [(ngModel)]="p1" type="text" placeholder="Start" (input)="getp1($event)">
+      <ion-input [(ngModel)]="p1" type="text" placeholder="start" (input)="getp1($event)">
       </ion-input>
         </ion-item>
         <!--<ion-searchbar [(ngModel)]="p1"(ionInput)="getp1($event)"
@@ -66,9 +66,10 @@
 
   <ion-card  *ngFor="let root of connected_routes">
     <img class="header" src="http://placehold.it/500x100"/>
-    <p class="root-title">{{root.in}}</p>
+    <p class="root-title">{{root.r1_list}}</p>
+    <label>Connecting point:</label>
     <p class="root-title">{{root.con}}</p>
-    <p class="root-title">{{root.out}}</p>
+    <p class="root-title">{{root.r2_list}}</p>
 
 
   </ion-card>

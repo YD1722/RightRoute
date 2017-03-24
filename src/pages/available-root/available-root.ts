@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import {Http,Headers} from '@angular/http';
 import {Stations} from '../../providers/stations';
+import {Routes} from '../../providers/routes';
 @Component({
   selector: 'page-available-root',
   templateUrl: 'available-root.html'
@@ -10,10 +11,10 @@ export class AvailableRootPage {
   p1:any;
   p2:any;
   availableRoutes:any;
-  connected_routes:any;
+  connected_routes:any=[];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,public http:Http,
-              private stationService:Stations) {
+              private stationService:Stations, private routeService:Routes) {
   }
 
   ionViewDidLoad(){
@@ -24,6 +25,8 @@ export class AvailableRootPage {
     this.p1_stations=this.stationService.getStations();
     this.p2_stations=this.stationService.getStations();
   }
+
+  // main method to find available bus routes WRT to user inputs============================
   findWay(){
     this.typeNotOccured="searchOccured";
     this.findBusRoutes().then(data=> {
@@ -37,14 +40,14 @@ export class AvailableRootPage {
       let type= data[(<any>data).length-1].type;
       (<any>data).pop();  // have a look again
       //console.log("data ", data);
-      //case 1 (direct route)
+      //case 1 (direct route)==========================================
       if(type=='direct'){
         this.availableRoutes=data;
       }
-      //case 2- connected  busses
+      //case 2- connected  busses=======================================
       else{
         for(let route of <any>data){
-          console.log("routes: ",route.path)
+          console.log("routes: ",route.path);
           if(route.path.includes(p1)){
             p1_list.push(route);
             console.log(p1," ",route.path);
@@ -53,88 +56,113 @@ export class AvailableRootPage {
             console.log(p2," ",route.path);
           }
         }
-
-
-
       }
-      /*let a=[1,2,3];
-      let b= [9,4,6];
-
-      var c=a.filter(function(n) {
-        return b.indexOf(n) !== -1;
-      });
-      console.log(c);*/
 
       let connected_routes:Object[]=[];
       p1_list.forEach(function(elem1){
         p2_list.forEach(function(elem2){
           // find intersection between two arrays
-          var c=elem1.path.filter(function(n) {
+          let c:string[]=elem1.path.filter(function(n) {
             return elem2.path.indexOf(n) !== -1;
           });
-          var connected_route={
-            //p1:this.p1,
-            //p2:this.p2,
-            in:elem1.path,
-            con:c,
-            out:elem2.path
-          }
-          //this.makeData(connected_route,);
+          let connected_route:any={
+            p1:p1, // start point
+            p2:p2,  // end point
+            in_:elem1,
+            con:c[0],
+            out_:elem2
+          };
+          console.log("ado",connected_route);
+          //
+          //connected_routes.push(connected_route);
+
+          //let route_details  = this.makeData(connected_route);
           connected_routes.push(connected_route);
         })
       });
-      console.log("connected ",connected_routes);
-      this.connected_routes=connected_routes;
 
-
-
+      for(let route of connected_routes){
+        console.log("hey__",route);
+        this.connected_routes.push(this.makeData(route));
+      }
       }
     )}
 
-  makeData(connected_route:any){
-    let r1= connected_route.in.path;
-    let r2= connected_route.out.path;
-    let con= connected_route.c;
+  //database access==================================================
+  findBusRoutes(){
+    let p1=this.p1;
+    let p2= this.p2;
+    return this.routeService.findBusRoutes(p1,p2);
+  }
+  // ===============end of main method========================
+
+
+  makeData(connected_route:any){  // return any ??
+
+    console.log("hey there");
+
+    let r1= connected_route.in_.path;
+    let r2= connected_route.out_.path;
+    let con= connected_route.con;
     let p1=connected_route.p1;
     let p2=connected_route.p2;
 
+    let p1_ =r1.indexOf(p1);
+    let p2_= r2.indexOf(p2);
+    let c_p1= r1.indexOf(con);
+    let c_p2= r2.indexOf(con);
 
-    let p1_ =r1.getIndex(p1);
-    let p2_=r2.getIndex(p2);
-    let c_p1= r1.getIndex(con);
-    let c_p2= r2.getIndex(con);
+    //expect(c_p1).toEqual(2);
 
-  }
+    let r1_list:any=[];
+    let r2_list:any=[];
+    //let con_list:any=[con];
 
-  seekArrayLeft(array:string[],a:number,b:number){
-    //[1,2,3,4,5]  <-- a<b
-    for(let i=b; i<a ;i--){
-
+    //case 1
+    if(p1_<c_p1){
+      r1_list=this.seekArrayRight(r1,p1_,c_p1,);
+      //expect(r1_list).toEqual(["b","c","d"]);
+    }else if(p1_>c_p1) {
+      r1_list = this.seekArrayLeft(r1,c_p1, p1_);
     }
-  }
-  findBusRoutes(){
-    let searchOptions = {
-      p1:this.p1,
-      p2:this.p2
+    console.log(r1_list)
+    // case 2
+    if(p2_<c_p2){
+      r2_list=this.seekArrayLeft(r2,p2_,c_p2);
+    }else if(p2_>c_p2){
+      r2_list=this.seekArrayRight(r2,c_p2,p2_);
     }
-
-    return new Promise(resolve => {
-      let headers = new Headers();
-      headers.append('Content-Type', 'application/json');
-
-      this.http.post('http://localhost:8080/api/bus_routes', JSON.stringify(searchOptions), {headers: headers})
-        .map(res => res.json())
-        .subscribe(data => {
-          resolve(data);
-
-        });
-
-    });
+    let route_details:any={
+        r1_list:r1_list,
+        con:con,
+        r2_list:r2_list
+    }
+    return(route_details);
   }
 
 
+  seekArrayLeft(array:any[],a:number,b:number){
+  //[1,2,3,4,5]  <-- a<b [con<--p1 / p2<--con]
+  let result:any=[];
+  for(let i=b;a<=i;i--){
+    result.push(array[i]);
+  }
+  return result;
+};
 
-  //clear search criterias
+  seekArrayRight(array:string[],a:number,b:number){
+  //[1,2,3,4,5] ---->  a<b [p1-->con / con-->p2]
+  let result:any=[];
+  for(let i=a;b>=i;i++){
+    result.push(array[i]);
+  }
+  return result;
+};
+
+
+
+
+  //clear search criterias===========================================
   clearp1(){
     this.p1="";
     this.searchQueryp1=null;
@@ -143,13 +171,13 @@ export class AvailableRootPage {
     this.p2="";
     this.searchQueryp2=null;
   }
+
+
+  // dropdown list logic===============================================
   p1_stations:any[];
   p2_stations:any[];
   searchQueryp1:string;
-  searchQueryp2:string;
-
-
-
+  searchQueryp2:string
   typeNotOccured:any;
    getp1(ev: any){
     this.initArrays(); // init always?? need a solution here
@@ -184,8 +212,6 @@ export class AvailableRootPage {
     this.p2=name;
     this.searchQueryp2=null;
   }
-  printMe(){
-     console.log("he")
-  }
+
 
 }
