@@ -9,20 +9,23 @@ import {BusStationPage} from '../pages/bus-station/bus-station';
 import { TranslateModule } from 'ng2-translate/ng2-translate';
 import {TestPage} from '../pages/test/test';
 import {ReviewPage} from '../pages/review/review';
+import {StationModalPage} from '../pages/station-modal/station-modal';
+import {LoginPage} from '../pages/login/login';
+
 
 import {FormsModule} from '@angular/forms';
 import { Ng2CompleterModule } from "ng2-completer";
 import { Routes} from '../providers/routes';
 import { Stations} from '../providers/stations';
-import {StationModalPage} from '../pages/station-modal/station-modal';
+import {AppService} from '../providers/app';
 
-//import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
+import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 
-/*const cloudSettings: CloudSettings = {
+const cloudSettings: CloudSettings = {
   'core': {
     'app_id': 'e80be179'
   }
-};*/
+};
 @NgModule({
   declarations: [
     MyApp,
@@ -32,14 +35,15 @@ import {StationModalPage} from '../pages/station-modal/station-modal';
     BusStationPage,
     TestPage,
     StationModalPage,
-    ReviewPage
+    ReviewPage,
+    LoginPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
     TranslateModule.forRoot(),
     FormsModule,
     Ng2CompleterModule,
-    //CloudModule.forRoot(cloudSettings)
+    CloudModule.forRoot(cloudSettings)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -50,8 +54,9 @@ import {StationModalPage} from '../pages/station-modal/station-modal';
     BusStationPage,
     TestPage,
     StationModalPage,
-    ReviewPage
+    ReviewPage,
+    LoginPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},Routes,Stations]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},Routes,Stations,AppService]
 })
 export class AppModule {}

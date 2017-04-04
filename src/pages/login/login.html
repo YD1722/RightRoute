@@ -1,0 +1,79 @@
+
+<ion-header>
+  <ion-toolbar>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content padding>
+  <div padding>
+    <ion-segment [(ngModel)]="authPage">
+      <ion-segment-button value="login">
+        LogIn
+      </ion-segment-button>
+      <ion-segment-button value="signup">
+        SignUp
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  <div [ngSwitch]="authPage">
+    <div *ngSwitchCase="'login'">
+      <ion-row>
+        <ion-col>
+          <ion-list>
+
+            <ion-item>
+
+              <ion-input type="email" placeholder="Email" [(ngModel)]="email"></ion-input>
+            </ion-item>
+
+            <ion-item>
+
+              <ion-input type="password" placeholder="Password" [(ngModel)]="password"></ion-input>
+            </ion-item>
+
+          </ion-list>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <button class="auth-button" ion-button (click)="doLogin()">
+            LogIn
+          </button>
+        </ion-col>
+      </ion-row>
+
+    </div>
+
+    <div *ngSwitchCase="'signup'">
+
+      <ion-row>
+        <ion-col>
+          <ion-list>
+            <ion-item>
+              <ion-input type="text" placeholder="Name" [(ngModel)]="name"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input type="email" placeholder="Email" [(ngModel)]="email"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-input type="password" placeholder="Password" [(ngModel)]="password"></ion-input>
+            </ion-item>
+
+          </ion-list>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <button class="auth-button" ion-button (click)="doRegister()">
+            SignUp
+          </button>
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
+</ion-content>

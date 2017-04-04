@@ -40,4 +40,23 @@ export class Routes {
     });
   }
 
+  searchBusRoute(item) {
+
+    let searchResult = {
+      name: item
+    }
+    return new Promise(resolve => {
+      let headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+
+      this.http.post('http://localhost:8080/api/routes', JSON.stringify(searchResult), {headers: headers})
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+
+        });
+
+    });
+  }
+
 }

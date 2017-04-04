@@ -1,6 +1,8 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-searchbar (input)="getItems($event)"></ion-searchbar>
+    <div class="route-search">
+      <ion-searchbar placeholder="Enter Route Number (eg:100)" (input)="getItems($event)"></ion-searchbar>
+    </div>
   </ion-toolbar>
 </ion-header>
 

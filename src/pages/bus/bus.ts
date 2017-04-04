@@ -43,8 +43,8 @@ export class BusPage {
   }
 }
 
-  searchBus(item){
-    this.searchBusRoute(item).then(data=>{
+  searchBus(item:any){  // passing type string ?? have a look here
+    this.routeService. searchBusRoute(item).then(data=>{
       //console.log(data);
       let routeModal=this.modalCtrl.create(TestPage,{
         root:data
@@ -55,22 +55,23 @@ export class BusPage {
 
   }
 
-  searchBusRoute(item) {
+  /*searchBusRoute(item) {
 
-    let searchResult = {
-      name: item
-    }
-    return new Promise(resolve => {
-      let headers = new Headers();
-      headers.append('Content-Type', 'application/json');
+ let searchResult = {
+ name: item
+ }
+ return new Promise(resolve => {
+ let headers = new Headers();
+ headers.append('Content-Type', 'application/json');
 
-      this.http.post('http://localhost:8080/api/routes', JSON.stringify(searchResult), {headers: headers})
-        .map(res => res.json())
-        .subscribe(data => {
-          resolve(data);
+ this.http.post('http://localhost:8080/api/routes', JSON.stringify(searchResult), {headers: headers})
+ .map(res => res.json())
+ .subscribe(data => {
+ resolve(data);
 
-        });
+ });
 
-    });
-  }
+ });
+ }*/
+
 }

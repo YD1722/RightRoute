@@ -1,22 +1,48 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams,ViewController,LoadingController} from 'ionic-angular';
+import {Routes} from '../../providers/routes';
+import{Http} from'@angular/http';
 
-/*
-  Generated class for the Review page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
 @Component({
   selector: 'page-review',
   templateUrl: 'review.html'
 })
 export class ReviewPage {
+  searchQuery: string=null ;
+  items:any=[];
+  reviews:any;
+  constructor(public http:Http,public loadCtrl:LoadingController,public navCtrl:NavController,
+              public routeService:Routes,public navParams:NavParams) {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {}
+    this.initializeItems();
+  }
+  ionViewDidLoad(){
+    let rootObject=this.navParams.get('root');
+    this.getReviews(rootObject);
+  }
+  initializeItems() {
+    this.items=this.routeService.getRoutes();
+  }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ReviewPage');
+  //search function dropdown
+  getItems(ev: any) {
+
+    // Reset items back to all of the items
+    this.initializeItems();
+
+    // set val to the value of the searchbar
+    let val = ev.target.value;
+    this.searchQuery= val;
+    // if the value is an empty string don't filter the items
+    if (val && val.trim() != '') {
+      this.items = this.items.filter((item) => {
+        return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      })
+    }
+  }
+
+  getReviews(route:any){
+    this.routeService.searchBusRoute(route).then(data=>{this.reviews=data})
   }
 
 }

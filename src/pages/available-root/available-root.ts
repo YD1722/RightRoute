@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams} from 'ionic-angular';
 import {Http,Headers} from '@angular/http';
 import {Stations} from '../../providers/stations';
 import {Routes} from '../../providers/routes';
+import {TestPage} from '../../pages/test/test';
+
 @Component({
   selector: 'page-available-root',
   templateUrl: 'available-root.html'
@@ -28,6 +30,8 @@ export class AvailableRootPage {
 
   // main method to find available bus routes WRT to user inputs============================
   findWay(){
+    this.connected_routes=[];
+    this.availableRoutes=[];
     this.typeNotOccured="searchOccured";
     this.findBusRoutes().then(data=> {
       let p1 = this.p1;
@@ -43,6 +47,7 @@ export class AvailableRootPage {
       //case 1 (direct route)==========================================
       if(type=='direct'){
         this.availableRoutes=data;
+        //let pathChunk= this.chunkList(data)
       }
       //case 2- connected  busses=======================================
       else{
@@ -96,7 +101,7 @@ export class AvailableRootPage {
   }
   // ===============end of main method========================
 
-
+// mae data method use to mmake data in a user friendly way to show connected bus routes
   makeData(connected_route:any){  // return any ??
 
     console.log("hey there");
@@ -184,6 +189,7 @@ export class AvailableRootPage {
      this.typeNotOccured=null;
     let val = ev.target.value;
     this.searchQueryp1=val;
+    this.searchQueryp2=null;
     if (val && val.trim() != '') {
       this.p1_stations = this.p1_stations.filter((item) => {
         return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
@@ -194,6 +200,7 @@ export class AvailableRootPage {
   getp2(ev: any){
     //this.searchQuery=null;
     this.typeNotOccured=null;
+    this.searchQueryp1=null;
     this.initArrays(); // init always?? need a solution here
     let val = ev.target.value;
     this.searchQueryp2=val;
@@ -213,5 +220,12 @@ export class AvailableRootPage {
     this.searchQueryp2=null;
   }
 
+  // show direct route details in Route page
+
+  showDirectRoute(root:any){
+     this.navCtrl.push(TestPage,{
+       root:[root]
+     });
+  }
 
 }

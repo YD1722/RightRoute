@@ -1,5 +1,6 @@
 <script src="available-root.ts"></script>
 <ion-header>
+  <ion-toolbar >
   <div class="search-routes">
 
     <ion-grid>
@@ -7,7 +8,7 @@
     <ion-row>
       <ion-col col-9>
         <ion-item>
-      <ion-input [(ngModel)]="p1" type="text" placeholder="start" (input)="getp1($event)">
+      <ion-input [(ngModel)]="p1" type="text" placeholder="Start Station" (input)="getp1($event)">
       </ion-input>
         </ion-item>
         <!--<ion-searchbar [(ngModel)]="p1"(ionInput)="getp1($event)"
@@ -24,7 +25,7 @@
         <ion-row>
           <ion-col col-9>
             <ion-item>
-              <ion-input [(ngModel)]="p2" type="text" placeholder="Start" (input)="getp2($event)">
+              <ion-input [(ngModel)]="p2" type="text" placeholder="End Station" (input)="getp2($event)">
               </ion-input>
             </ion-item>
           </ion-col>
@@ -39,12 +40,12 @@
     </ion-grid>
 
     <ion-buttons>
-      <button ion-button full clear (click)="findWay()" icon-only=""><ion-icon name="search"></ion-icon></button>
+      <button ion-button full clear (click)="findWay()" icon-only><ion-icon name="search"></ion-icon></button>
     </ion-buttons>
     </div>
 
 
-
+  </ion-toolbar>
 
 
 </ion-header>
@@ -55,16 +56,34 @@
   <!--show available roots-->
 <div *ngIf="typeNotOccured">
 
-
-  <ion-card  *ngFor="let root of availableRoutes">
-    <img class="header" src="http://placehold.it/500x100"/>
-    <div class="card-title-container">
-      <p class="root-title">{{root.name}}</p>
-      <p class="root-description"><ion-icon name="cloud"></ion-icon> {{root.path}} </p>
-    </div>
+  <!--show direct routes-->
+  <ion-list>
+    <ion-list-header>
+      Directed Routes- Suggestions
+    </ion-list-header>
+  <ion-card class="directed-route"tappable (click)="showDirectRoute(root)" *ngFor="let root of availableRoutes">
+    <ion-item>
+      <ion-avatar item-left>
+        <h1>D</h1>
+      </ion-avatar>
+      <h2>Route No: {{root.name}} / {{root.path[0]}}-{{root.path[root.path.length-1]}}</h2>
+    </ion-item>
   </ion-card>
+  </ion-list>
+  <!--show connected routes-->
 
-  <ion-card  *ngFor="let root of connected_routes">
+
+  <ion-list>
+    <ion-list-header>
+      Connected Routes
+    </ion-list-header>
+  <ion-card class="connected-route" *ngFor="let root of connected_routes">
+    <ion-item>
+      <ion-avatar item-left>
+        <h1>C</h1>
+      </ion-avatar>
+    </ion-item>
+
     <img class="header" src="http://placehold.it/500x100"/>
     <p class="root-title">{{root.r1_list}}</p>
     <label>Connecting point:</label>
@@ -73,6 +92,7 @@
 
 
   </ion-card>
+  </ion-list>
 </div>
 
 

@@ -1,7 +1,10 @@
 <ion-header>
 
   <ion-navbar >
-    <ion-title>Test</ion-title>
+    <ion-title>
+      <ion-icon name="bus" item-left large></ion-icon>
+      <h2>{{root.name}}/{{root.path[0]}}-{{root.path[root.path.length-1]}}</h2>
+    </ion-title>
     <ion-buttons end>
       <button ion-button (click)="closeModal()" icon-only><ion-icon name="close"></ion-icon></button>
     </ion-buttons>
@@ -12,27 +15,39 @@
 
 <ion-content>
   <ion-card #map id="map">
-    <div *ngIf="notLoadMap">
+    <div *ngIf="mapNotLoaded">
       <img src="http://placehold.it/350x150">
-    </div>
     <ion-fab right top>
-      <button ion-fab>
-        <ion-icon name="pin"></ion-icon>
+      <button (click)="loadMap()" ion-fab>
+        <ion-icon name="refresh-circle"></ion-icon>
       </button>
     </ion-fab>
+    </div>
+
+
+    <div *ngIf="mapLoaded">
+      <ion-fab right top>
+        <button (click)="getMylocation()" ion-fab>
+          <ion-icon name="pin"></ion-icon>
+        </button>
+      </ion-fab>
+    </div>
   </ion-card>
 
   <ion-card>
 
 
     <ion-item>
-      <ion-icon name="football" item-left large></ion-icon>
-      <h2>{{root.name}}</h2>
+      <ion-grid>
+      <ion-row *ngFor="let stationChunks of root.chunkPath">
+        <ion-col  *ngFor="let station of stationChunks">
+          <button ion-button="" class="station-button" outline color="dark">
+            {{station}}
+          </button>
+        </ion-col >
+      </ion-row>
+      </ion-grid>
     </ion-item>
 
-    <ion-item>
-      <ion-icon name="wine" item-left large ></ion-icon>
-      <p>{{root.path}}</p>
-    </ion-item>
   </ion-card>
 </ion-content>
