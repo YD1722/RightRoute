@@ -1,13 +1,16 @@
 <ion-header>
   <ion-toolbar transparent>
-    <div class="route-search">
+   <!-- <div class="route-search">
       <ion-searchbar placeholder="Enter Route Number (eg:100)" (input)="getItems($event)"></ion-searchbar>
-    </div>
+    </div>-->
+    <ion-buttons end>
+      <button ion-button icon-only (click)="close()"><ion-icon name="close"></ion-icon></button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div  *ngIf="searchQuery">
+  <!--<div  *ngIf="searchQuery">
     <ion-list class="suggestions">
       <ion-item *ngFor="let item of items">
         <ion-buttons>
@@ -16,30 +19,30 @@
       </ion-item>
     </ion-list>
   </div>
+-->
+  <ion-list no-lines>
 
-  <div *ngIf="reviews">
-    <ion-list no-lines>
+    <ion-item-sliding *ngFor="let review of reviews">
 
-      <ion-item-sliding *ngFor="let route of reviews">
+      <ion-item>
 
-        <ion-item>
-          <ion-avatar item-left>
-            <img src="https://api.adorable.io/avatars/75/{{review.title}}">
-          </ion-avatar>
+        <p>{{review.description}}</p>
 
-          <p>{{route.review.description}}</p>
+        <ion-icon *ngIf="review.rating < 50" danger name="sad"></ion-icon>
+        <ion-icon *ngIf="review.rating >= 50" secondary name="happy"></ion-icon>
+        {{review.rating}}
 
-          <ion-icon *ngIf="review.rating < 50" danger name="sad"></ion-icon>
-          <ion-icon *ngIf="review.rating >= 50" secondary name="happy"></ion-icon>
-          {{review.rating}}
+      </ion-item>
 
-        </ion-item>
+      <!--male this a like button-->
+      <!--<ion-item-options>
+        <button ion-button color="danger" (click)="deleteReview(review)">
+          <ion-icon name="trash"></ion-icon>
+          Delete
+        </button>
+      </ion-item-options>-->
+    </ion-item-sliding>
 
-        <ion-item-options>
-         <!--need to add like button here-->
-        </ion-item-options>
-      </ion-item-sliding>
+  </ion-list>
 
-    </ion-list>
-  </div>
 </ion-content>

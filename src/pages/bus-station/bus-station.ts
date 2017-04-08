@@ -65,6 +65,7 @@ export class BusStationPage {
     })
   }
 
+  // this one should navigate to station provider :D
   getStationDetails(id:string){
     this.searchQuery=null;
     this.notLoadMap='notLoad';

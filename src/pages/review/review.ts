@@ -12,16 +12,19 @@ export class ReviewPage {
   items:any=[];
   reviews:any;
   constructor(public http:Http,public loadCtrl:LoadingController,public navCtrl:NavController,
-              public routeService:Routes,public navParams:NavParams) {
+              public routeService:Routes,public navParams:NavParams,private viewCtrl:ViewController) {
 
-    this.initializeItems();
+    //this.initializeItems();
   }
   ionViewDidLoad(){
-    let rootObject=this.navParams.get('root');
-    this.getReviews(rootObject);
+    this.reviews=this.navParams.get('reviews');
   }
   initializeItems() {
     this.items=this.routeService.getRoutes();
+  }
+
+  close(){
+    this.viewCtrl.dismiss();
   }
 
   //search function dropdown
@@ -41,8 +44,5 @@ export class ReviewPage {
     }
   }
 
-  getReviews(route:any){
-    this.routeService.searchBusRoute(route).then(data=>{this.reviews=data})
-  }
 
 }

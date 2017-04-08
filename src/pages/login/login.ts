@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams ,AlertController,LoadingController} from 'ionic-angular';
+import { NavController, NavParams ,AlertController,LoadingController,ViewController} from 'ionic-angular';
 import { Auth, User, UserDetails, IDetailedError } from '@ionic/cloud-angular';
-import { ReviewPage } from '../review/review';
+import { AddReviewPage } from '../add-review/add-review';
 
 
 @Component({
@@ -15,7 +15,8 @@ export class LoginPage {
   password:string = '';
   name:string = '';
   authPage:any;
-  constructor(public navCtrl: NavController, public auth:Auth, public user: User, public alertCtrl: AlertController, public loadingCtrl:LoadingController) {}
+  constructor(public navCtrl: NavController, public auth:Auth, public user: User,
+              public alertCtrl: AlertController, public loadingCtrl:LoadingController,private viewCtrl:ViewController) {}
 
   ionViewDidLoad() {
     this.authPage='login';
@@ -46,7 +47,7 @@ export class LoginPage {
     this.auth.login('basic', {'email':this.email, 'password':this.password}).then(() => {
       console.log('ok i guess?');
       loader.dismissAll();
-      this.navCtrl.setRoot(ReviewPage);
+      this.navCtrl.setRoot(AddReviewPage);
     }, (err) => {
       loader.dismissAll();
       console.log(err.message);
@@ -92,7 +93,7 @@ export class LoginPage {
       console.log('ok signup');
       this.auth.login('basic', {'email':details.email, 'password':details.password}).then(() => {
         loader.dismissAll();
-        this.navCtrl.setRoot(ReviewPage);
+        this.navCtrl.setRoot(AddReviewPage);
       });
 
     }, (err:IDetailedError<string[]>) => {
@@ -116,5 +117,8 @@ export class LoginPage {
 
   }
 
+  close(){
+    this.viewCtrl.dismiss();
+  }
 
 }

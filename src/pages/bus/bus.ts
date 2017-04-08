@@ -46,10 +46,14 @@ export class BusPage {
   searchBus(item:any){  // passing type string ?? have a look here
     this.routeService. searchBusRoute(item).then(data=>{
       //console.log(data);
-      let routeModal=this.modalCtrl.create(TestPage,{
+      /*let routeModal=this.modalCtrl.create(TestPage,{
         root:data
       });
-      routeModal.present();
+      routeModal.present();*/
+
+      this.navCtrl.push(TestPage,{
+        root:data
+      });
 
     });
 

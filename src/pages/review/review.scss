@@ -1,3 +1,21 @@
-page-review {
+.ios, .md {
+
+  page-review {
+
+    ion-item {
+      background-color: #fffdfb;
+      border-bottom: none !important;
+      border-color: #2d2d2d;
+    }
+
+    ion-label {
+      white-space: normal;
+    }
+
+    ion-item-sliding {
+      margin: 10px;
+    }
+
+  }
 
 }

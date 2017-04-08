@@ -11,13 +11,14 @@ import {TestPage} from '../pages/test/test';
 import {ReviewPage} from '../pages/review/review';
 import {StationModalPage} from '../pages/station-modal/station-modal';
 import {LoginPage} from '../pages/login/login';
-
+import {AddReviewPage} from '../pages/add-review/add-review';
 
 import {FormsModule} from '@angular/forms';
 import { Ng2CompleterModule } from "ng2-completer";
 import { Routes} from '../providers/routes';
 import { Stations} from '../providers/stations';
 import {AppService} from '../providers/app';
+import {Review} from '../providers/review';
 
 import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 
@@ -36,7 +37,8 @@ const cloudSettings: CloudSettings = {
     TestPage,
     StationModalPage,
     ReviewPage,
-    LoginPage
+    LoginPage,
+    AddReviewPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -55,8 +57,9 @@ const cloudSettings: CloudSettings = {
     TestPage,
     StationModalPage,
     ReviewPage,
-    LoginPage
+    LoginPage,
+    AddReviewPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},Routes,Stations,AppService]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},Routes,Stations,AppService,Review]
 })
 export class AppModule {}

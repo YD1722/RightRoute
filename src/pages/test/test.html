@@ -2,12 +2,19 @@
 
   <ion-navbar >
     <ion-title>
-      <ion-icon name="bus" item-left large></ion-icon>
+      <ion-icon name="bus">
       <h2>{{root.name}}/{{root.path[0]}}-{{root.path[root.path.length-1]}}</h2>
+      </ion-icon>
     </ion-title>
     <ion-buttons end>
-      <button ion-button (click)="closeModal()" icon-only><ion-icon name="close"></ion-icon></button>
+      <button ion-button icon-only (click)="showAddReview()"><ion-icon name="add"></ion-icon></button>
     </ion-buttons>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="logout()">
+        <ion-icon name="exit"></ion-icon>
+      </button>
+    </ion-buttons>
+
   </ion-navbar>
 
 </ion-header>
@@ -41,7 +48,7 @@
       <ion-grid>
       <ion-row *ngFor="let stationChunks of root.chunkPath">
         <ion-col  *ngFor="let station of stationChunks">
-          <button ion-button="" class="station-button" outline color="dark">
+          <button ion-button class="station-button" outline color="dark">
             {{station}}
           </button>
         </ion-col >
@@ -50,4 +57,7 @@
     </ion-item>
 
   </ion-card>
+  <button ion-button (click)="showReview()">
+    show Review
+  </button>
 </ion-content>

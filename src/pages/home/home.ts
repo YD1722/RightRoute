@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController} from 'ionic-angular';
 import {BusPage} from '../../pages/bus/bus';
 import {AvailableRootPage} from '../../pages/available-root/available-root';
 import {BusStationPage} from '../../pages/bus-station/bus-station';
@@ -14,7 +14,7 @@ export class HomePage {
   stationTab= BusStationPage;
 
   constructor(public navCtrl: NavController) {
-
   }
+
 
 }
