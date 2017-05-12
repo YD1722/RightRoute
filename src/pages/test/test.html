@@ -2,18 +2,12 @@
 
   <ion-navbar >
     <ion-title>
-      <ion-icon name="bus">
-      <h2>{{root.name}}/{{root.path[0]}}-{{root.path[root.path.length-1]}}</h2>
-      </ion-icon>
+      <ion-item>
+        <ion-icon small name="bus" item-left></ion-icon>
+          {{root.name}}
+        <ion-badge item-right>{{root.path[0]}}-{{root.path[root.path.length-1]}}</ion-badge>
+      </ion-item>
     </ion-title>
-    <ion-buttons end>
-      <button ion-button icon-only (click)="showAddReview()"><ion-icon name="add"></ion-icon></button>
-    </ion-buttons>
-    <ion-buttons end>
-      <button ion-button icon-only (click)="logout()">
-        <ion-icon name="exit"></ion-icon>
-      </button>
-    </ion-buttons>
 
   </ion-navbar>
 
@@ -41,7 +35,7 @@
     </div>
   </ion-card>
 
-  <ion-card>
+  <!-- <ion-card>
 
 
     <ion-item>
@@ -55,9 +49,34 @@
       </ion-row>
       </ion-grid>
     </ion-item>
+  </ion-card> -->
 
-  </ion-card>
-  <button ion-button (click)="showReview()">
+  <ion-list *ngFor="let station of path" >
+  <ion-item-sliding>
+    <ion-item>
+      <ion-avatar item-left>
+        <img>
+      </ion-avatar>
+      <h2>{{station}}</h2>
+    </ion-item>
+    <ion-item-options side="right">
+      <button ion-button color="primary">
+        <ion-icon name="play"></ion-icon>
+        view
+      </button>
+    </ion-item-options>
+  </ion-item-sliding>
+</ion-list>
+
+  <ion-item>
+  <button ion-button (click)="showReview()" icon-left item-left round>
     show Review
+    <ion-icon name="search"></ion-icon>
   </button>
+
+  <button ion-button icon-left item-right (click)="showAddReview()" round>
+  add Review
+  <ion-icon name="add"></ion-icon>
+</button>
+  </ion-item>
 </ion-content>

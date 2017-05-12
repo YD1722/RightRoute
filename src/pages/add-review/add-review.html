@@ -1,42 +1,35 @@
 <ion-header>
-  <ion-toolbar transparent>
+  <ion-navbar transparent>
     <ion-title>Add Review</ion-title>
 
  <!--   <button ion-button icon-only (click)="logout()">
       <ion-icon name="exit"></ion-icon>
     </button>-->
 
-    <ion-buttons end>
-      <button ion-button icon-only (click)="close()">
-        <ion-icon name="close"></ion-icon></button>
-    </ion-buttons>
-
-  </ion-toolbar>
+  </ion-navbar>
 </ion-header>
 
 <ion-content>
 
-  <ion-list no-lines>
-
+<form #Form="ngForm" (ngSubmit)="save()" >
     <ion-item>
       <ion-label floating>Route Number</ion-label>
-      <ion-input [(ngModel)]="routeNo" type="text"></ion-input>
+      <ion-input [(ngModel)]="routeNo" type="text" [ngModelOptions]="{standalone: true}" required></ion-input>
     </ion-item>
-
     <ion-item>
       <ion-label floating>Review</ion-label>
-      <ion-textarea [(ngModel)]="description"></ion-textarea>
+      <ion-textarea [(ngModel)]="description" [ngModelOptions]="{standalone: true}" required></ion-textarea>
     </ion-item>
 
     <ion-item>
-      <ion-range min="0" max="100" pin="true" [(ngModel)]="rating">
+      <ion-range min="0" max="10" pin="true" [(ngModel)]="rating" [ngModelOptions]="{standalone: true}" required>
         <ion-icon range-left name="sad"></ion-icon>
         <ion-icon range-right name="happy"></ion-icon>
       </ion-range>
     </ion-item>
-
-  </ion-list>
-
-  <button ion-button full color="secondary" (click)="save()">Save</button>
-
+    
+  <button ion-button [disabled]="!Form.form.valid || rating === 0" ion-button full color="secondary">Save
+  </button>
+    
+</form>
 </ion-content>

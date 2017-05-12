@@ -3,9 +3,11 @@ import {NavController, NavParams, ViewController, ModalController, LoadingContro
 import {AppService} from '../../providers/app';
 import {ReviewPage} from '../../pages/review/review';
 import {AddReviewPage} from '../../pages/add-review/add-review';
-import { Auth } from '@ionic/cloud-angular';
 import {LoginPage} from '../../pages/login/login';
 import {Review} from '../../providers/review';
+import {Auth} from '../../providers/auth';
+import { Geolocation } from '@ionic-native/geolocation';
+
 declare var google;
 
 @Component({
@@ -17,22 +19,26 @@ export class TestPage {
   root: any;
   mapNotLoaded: any;
   mapLoaded: any;
-
+  loading:any;
   @ViewChild('map') mapElement;
   map: any;
+  path:any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController,
-              private appService: AppService, private modalCtrl: ModalController, public auth: Auth,
-              private loadCtrl:LoadingController,private alertCtrl:AlertController,private reviewService:Review) {
+              private appService: AppService, private modalCtrl: ModalController,
+              private loadCtrl:LoadingController,private alertCtrl:AlertController,private reviewService:Review,
+              private authService:Auth,private geolocation: Geolocation) {
     this.root = navParams.get('root')[0];
   }
 
   ionViewDidLoad() {
     this.mapNotLoaded = "true";
     this.mapLoaded = null;
-    this.root.chunkPath = this.appService.chunkList(this.root.path, 4);
-    console.log(this.root)
+    this.path= this.root.path;
+    //this.root.chunkPath = this.appService.chunkList(this.root.path, 4);
+    console.log(this.root);
   }
+
 
   loadMap() {
     this.mapNotLoaded = null;
@@ -45,6 +51,7 @@ export class TestPage {
   }
 
   initMap() {
+
     this.map = new google.maps.Map(this.mapElement.nativeElement, {
       center: {lat: 6.923543, lng: 79.856034},
       zoom: 12
@@ -59,32 +66,35 @@ export class TestPage {
   }
 
   getMyLoacation() {
-
+    this.geolocation.getCurrentPosition().then((resp) => {
+      // resp.coords.latitude
+      // resp.coords.longitude
+      console.log(resp.coords.latitude,resp.coords.longitude)
+    }).catch((error) => {
+      console.log('Error getting location', error);
+    });
   }
 
 
   showAddReview() {
-    if (this.auth.isAuthenticated()) {
+    this.showLoader();
+    //Check if already authenticated
+    this.authService.checkAuthentication().then((res) => {
+      this.navCtrl.push(AddReviewPage);
+      this.loading.dismiss();
+    }, (err) => {
+      let modal=this.modalCtrl.create(LoginPage);
+      modal.present();
+      this.loading.dismiss();
+    });
+   /* if (this.auth.isAuthenticated()) {
       this.navCtrl.push(AddReviewPage);
     } else {
       let modal = this.modalCtrl.create(LoginPage);
       modal.present();
-    }
+    }*/
   }
 
-  logout() {
-    let loader = this.loadCtrl.create({
-      content: "Logging out..."
-    });
-    loader.present();
-    this.auth.logout();
-    loader.dismissAll();
-    let alert = this.alertCtrl.create({
-      title:'LogOutSuccefuly',
-      buttons:['OK']
-    });   // NEED MORE ATTENTION HERE
-    alert.present();
-  }
 
   showReview(){
     this.reviewService.getReview(this.root.name)
@@ -95,6 +105,16 @@ export class TestPage {
        console.log(review[0].reviews);*/
       }
       );
+  }
+
+  showLoader(){
+
+    this.loading = this.loadCtrl.create({
+      content: 'Authenticating...'
+    });
+
+    this.loading.present();
+
   }
 }
 

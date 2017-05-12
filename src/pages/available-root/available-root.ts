@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams} from 'ionic-angular';
 import {Http,Headers} from '@angular/http';
-import {Stations} from '../../providers/stations';
+import {Station} from '../../providers/station';
 import {Routes} from '../../providers/routes';
 import {TestPage} from '../../pages/test/test';
+import { AlertController,LoadingController } from 'ionic-angular';
+import { Geolocation } from '@ionic-native/geolocation';
 
+declare var google;
 @Component({
   selector: 'page-available-root',
   templateUrl: 'available-root.html'
@@ -14,9 +17,11 @@ export class AvailableRootPage {
   p2:any;
   availableRoutes:any;
   connected_routes:any=[];
+  stationArray:any[];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,public http:Http,
-              private stationService:Stations, private routeService:Routes) {
+              private stationService:Station, private routeService:Routes,private alertCtrl: AlertController,
+              private geolocation:Geolocation,private loadingCtrl:LoadingController) {
   }
 
   ionViewDidLoad(){
@@ -24,8 +29,11 @@ export class AvailableRootPage {
   }
 
   initArrays(){
-    this.p1_stations=this.stationService.getStations();
-    this.p2_stations=this.stationService.getStations();
+    this.p1_stations=this.stationService.importStations();
+    this.p2_stations=this.stationService.importStations();
+    //rather than save locally typeahead may be fine :D
+
+    this.stationArray=this.stationService.importStations();
   }
 
   // main method to find available bus routes WRT to user inputs============================
@@ -77,7 +85,7 @@ export class AvailableRootPage {
             con:c[0],
             out_:elem2
           };
-          console.log("ado",connected_route);
+          //console.log("ado",connected_route);
           //
           //connected_routes.push(connected_route);
 
@@ -87,7 +95,7 @@ export class AvailableRootPage {
       });
 
       for(let route of connected_routes){
-        console.log("hey__",route);
+        //console.log("hey__",route);
         this.connected_routes.push(this.makeData(route));
       }
       }
@@ -155,7 +163,7 @@ export class AvailableRootPage {
   return result;
 };
 
-  seekArrayRight(array:string[],a:number,b:number){
+seekArrayRight(array:string[],a:number,b:number){
   //[1,2,3,4,5] ---->  a<b [p1-->con / con-->p2]
   let result:any=[];
   for(let i=a;b>=i;i++){
@@ -168,7 +176,7 @@ export class AvailableRootPage {
 
 
   //clear search criterias===========================================
-  clearp1(){
+clearp1(){
     this.p1="";
     this.searchQueryp1=null;
   }
@@ -184,7 +192,7 @@ export class AvailableRootPage {
   searchQueryp1:string;
   searchQueryp2:string
   typeNotOccured:any;
-   getp1(ev: any){
+getp1(ev: any){
     this.initArrays(); // init always?? need a solution here
      this.typeNotOccured=null;
     let val = ev.target.value;
@@ -192,7 +200,7 @@ export class AvailableRootPage {
     this.searchQueryp2=null;
     if (val && val.trim() != '') {
       this.p1_stations = this.p1_stations.filter((item) => {
-        return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
+        return (item.station_name.indexOf(val.toLowerCase()) > -1);
       })
     }
   }
@@ -206,7 +214,7 @@ export class AvailableRootPage {
     this.searchQueryp2=val;
     if (val && val.trim() != '') {
       this.p2_stations = this.p2_stations.filter((item) => {
-        return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
+        return (item.station_name.indexOf(val.toLowerCase()) > -1);
       })
     }
   }
@@ -228,4 +236,118 @@ export class AvailableRootPage {
      });
   }
 
+  getMyLocation(){
+      let loading = this.loadingCtrl.create({
+      spinner: 'bubbles',
+      content: `
+      <div class="custom-spinner-container">
+        <div class="custom-spinner-box"></div>
+        <p>this may take sevral minutes</p>
+      </div>`,
+      });
+      loading.present();
+      this.geolocation.getCurrentPosition().then((resp) => {
+     // resp.coords.latitude
+     // resp.coords.longitude
+      let lat=resp.coords.latitude;
+      let lang= resp.coords.longitude;
+      let myLatLng = new google.maps.LatLng({lat:lat, lng: lang});
+      //let location=[resp.coords.latitude,resp.coords.longitude];
+      console.log(resp.coords.latitude,resp.coords.longitude);
+
+      this.findNearbyStations(myLatLng);
+      //this.useDirectionMatrix();
+       this.stationArray.sort((a,b)=>Number(a.distance)-Number(b.distance));
+       this.showRadio();
+       loading.dismiss();
+
+      console.log(this.stationArray)
+     }).catch((error) => {
+     console.log('Error getting location', error);
+     });
+
+  }
+  useDirectionMatrix(){
+
+  }
+
+  findNearbyStations(LatLng:any){
+    this.stationArray.map(station=>{this.computeDistance(station,LatLng);
+    });
+  }
+
+    computeDistance(station:any,LatLng:any):any{
+    let coordinates=station.coordinates;
+    let stLatLng= new google.maps.LatLng({lat:coordinates[1], lng:coordinates[0]});
+    let distance=(google.maps.geometry.spherical.computeDistanceBetween(LatLng,stLatLng)/1000).toFixed(2);
+    station.distance=distance;
+    return station;
+  }
+
+  showRadio() {
+    let alert = this.alertCtrl.create({
+      title:'Nearby Stations',
+      inputs:[{
+        type: 'radio',
+        label: this.stationArray[0].station_name,
+        value: this.stationArray[0].station_name
+      },
+        {
+          type: 'radio',
+          label: this.stationArray[1].station_name,
+          value: this.stationArray[1].station_name
+        }],
+      buttons:[
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'OK',
+          handler: data => {
+            if(this.searchQueryp1){
+              this.p1=data;
+              this.searchQueryp1=null;
+            }
+            if(this.searchQueryp2){
+              this.p2=data;
+              this.searchQueryp2=null;
+            }
+            //this.testRadioOpen = false;
+            //this.testRadioResult = data;
+          }
+        }
+
+      ]
+
+    });
+   /* alert.setTitle('Nearby Stations');
+
+    alert.addInput([{
+      type: 'radio',
+      label: 'Blue',
+      value: 'blue',
+      checked: true
+    },
+      {
+        type: 'radio',
+        label: 'Red',
+        value: 'red',
+        checked: true
+      }
+    ]);
+
+    alert.addButton('Cancel');
+    alert.addButton({
+      text: 'OK',
+      handler: data => {
+        //this.testRadioOpen = false;
+        //this.testRadioResult = data;
+      }
+    });*/
+    alert.present();
+  }
 }

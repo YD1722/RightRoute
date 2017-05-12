@@ -27,6 +27,9 @@ export class ReviewPage {
     this.viewCtrl.dismiss();
   }
 
+  pressEvent(e:any){
+    
+  }
   //search function dropdown
   getItems(ev: any) {
 

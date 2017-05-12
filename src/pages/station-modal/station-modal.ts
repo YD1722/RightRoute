@@ -1,6 +1,6 @@
 import { Component,ViewChild } from '@angular/core';
 import { NavController, NavParams,ViewController } from 'ionic-angular';
-
+import {StationType} from '../../mockData/DataTypes/StationType';
 /*
   Generated class for the StationModal page.
 
@@ -13,12 +13,13 @@ declare var google;
   templateUrl: 'station-modal.html'
 })
 export class StationModalPage {
-  station:any;
+  station:StationType;
 
   @ViewChild('map') mapElement;
   map :any;
   constructor(public navCtrl: NavController, public navParams: NavParams,public viewCtrl:ViewController) {
     this.station= navParams.get('station');
+    console.log(this.station);
   }
 
   ionViewDidLoad() {

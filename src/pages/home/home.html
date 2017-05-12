@@ -1,6 +1,9 @@
+
 <ion-tabs>
   <ion-tab [root]="busTab" tabTitle="Busses" tabIcon="bus"></ion-tab>
   <ion-tab [root]="rootTab" tabTitle="Route" tabIcon="repeat"></ion-tab>
   <ion-tab [root]="stationTab" tabTitle="Stations" tabIcon="pin"></ion-tab>
-
+  <button ion-button icon-only (click)="presentPopover($event)" small style="position: absolute; right: 0;">
+  		<ion-icon name="more"></ion-icon>
+ 	</button>
 </ion-tabs>

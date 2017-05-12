@@ -1,119 +1,82 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams ,AlertController,LoadingController,ViewController} from 'ionic-angular';
-import { Auth, User, UserDetails, IDetailedError } from '@ionic/cloud-angular';
+import { ToastController,ViewController,NavController, LoadingController } from 'ionic-angular';
+import { Auth } from '../../providers/auth';
 import { AddReviewPage } from '../add-review/add-review';
+import { SignupPage } from '../signup/signup';
 
 
 @Component({
-  selector: 'page-login',
+  selector: 'login-page',
   templateUrl: 'login.html'
 })
 export class LoginPage {
 
-  // showLogin:boolean = true;
-  email:string = '';
-  password:string = '';
-  name:string = '';
-  authPage:any;
-  constructor(public navCtrl: NavController, public auth:Auth, public user: User,
-              public alertCtrl: AlertController, public loadingCtrl:LoadingController,private viewCtrl:ViewController) {}
+  username: string;
+  password: string;
+  loading: any;
+
+  constructor(public navCtrl: NavController, public authService: Auth,
+   public loadingCtrl: LoadingController,private viewCtrl:ViewController,private toastCtrl:ToastController) {
+
+  }
+
 
   ionViewDidLoad() {
-    this.authPage='login';
-  }
 
-  /*
-   for both of these, if the right form is showing, process the form,
-   otherwise show it
-   */
-  doLogin() {
+    /*this.showLoader();
 
-
-    if(this.email === '' || this.password === '') {
-      let alert = this.alertCtrl.create({
-        title:'Register Error',
-        subTitle:'All fields are rquired',
-        buttons:['OK']
-      });
-      alert.present();
-      return;
-    }
-
-    let loader = this.loadingCtrl.create({
-      content: "Logging in..."
-    });
-    loader.present();
-
-    this.auth.login('basic', {'email':this.email, 'password':this.password}).then(() => {
-      console.log('ok i guess?');
-      loader.dismissAll();
+    //Check if already authenticated
+    this.authService.checkAuthentication().then((res) => {
+      console.log("Already authorized");
+      this.loading.dismiss();
       this.navCtrl.setRoot(AddReviewPage);
     }, (err) => {
-      loader.dismissAll();
-      console.log(err.message);
+      console.log("Not already authorized");
+      this.loading.dismiss();
+    });*/
 
-      let errors = '';
-      if(err.message === 'UNPROCESSABLE ENTITY') errors += 'Email isn\'t valid.<br/>';
-      if(err.message === 'UNAUTHORIZED') errors += 'Password is required.<br/>';
+  }
 
-      let alert = this.alertCtrl.create({
-        title:'Login Error',
-        subTitle:errors,
-        buttons:['OK']
+  login(){
+
+    this.showLoader();
+
+    let credentials = {
+      username: this.username,
+      password: this.password
+    };
+
+    this.authService.login(credentials).then((result) => {
+      this.loading.dismiss();
+      let toast = this.toastCtrl.create({
+        message: 'logged in successfully',
+        duration: 1000
       });
-      alert.present();
+      toast.present();
+      this.viewCtrl.dismiss();
+    }, (err) => {
+      let toast = this.toastCtrl.create({
+        message: 'invalid user credentials',
+        duration: 1000
+      });
+      toast.present();
+      this.loading.dismiss();
+      console.log(err);
     });
 
   }
 
-  doRegister() {
+  launchSignup(){
+    this.navCtrl.push(SignupPage);
+  }
 
-    /*
-     do our own initial validation
-     */
-    if(this.name === '' || this.email === '' || this.password === '') {
-      let alert = this.alertCtrl.create({
-        title:'Register Error',
-        subTitle:'All fields are rquired',
-        buttons:['OK']
-      });
-      alert.present();
-      return;
-    }
+  showLoader(){
 
-    let details: UserDetails = {'email':this.email, 'password':this.password, 'name':this.name};
-    console.log(details);
-
-    let loader = this.loadingCtrl.create({
-      content: "Registering your account..."
+    this.loading = this.loadingCtrl.create({
+      content: 'Authenticating...'
     });
-    loader.present();
 
-    this.auth.signup(details).then(() => {
-      console.log('ok signup');
-      this.auth.login('basic', {'email':details.email, 'password':details.password}).then(() => {
-        loader.dismissAll();
-        this.navCtrl.setRoot(AddReviewPage);
-      });
-
-    }, (err:IDetailedError<string[]>) => {
-      loader.dismissAll();
-      let errors = '';
-      for(let e of err.details) {
-        console.log(e);
-        if(e === 'required_email') errors += 'Email is required.<br/>';
-        if(e === 'required_password') errors += 'Password is required.<br/>';
-        if(e === 'conflict_email') errors += 'A user with this email already exists.<br/>';
-        //don't need to worry about conflict_username
-        if(e === 'invalid_email') errors += 'Your email address isn\'t valid.';
-      }
-      let alert = this.alertCtrl.create({
-        title:'Register Error',
-        subTitle:errors,
-        buttons:['OK']
-      });
-      alert.present();
-    });
+    this.loading.present();
 
   }
 

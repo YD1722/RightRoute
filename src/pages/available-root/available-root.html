@@ -1,6 +1,6 @@
 <script src="available-root.ts"></script>
 <ion-header>
-  <ion-toolbar >
+  <ion-toolbar>
   <div class="search-routes">
 
     <ion-grid>
@@ -97,20 +97,38 @@
 
 
   <div *ngIf="searchQueryp1">
+    <ion-item item-left>
+      <button ion-button clear (click)=getMyLocation()>
+        <ion-icon name="pin"></ion-icon>
+        My Location
+      </button>
+    </ion-item>
     <ion-list class="suggestions">
+
+
+
       <ion-item *ngFor="let station of p1_stations">
         <ion-buttons>
-          <button color="dark" ion-button clear full (click)="setvalp1(station.name)" >{{ station.name }}</button>
+          <button color="dark" ion-button clear (click)="setvalp1(station.station_name)" >{{ station.station_name }}</button>
         </ion-buttons>
       </ion-item>
     </ion-list>
   </div>
 
-  <div  *ngIf="searchQueryp2">
+  <div *ngIf="searchQueryp2">
+    <ion-item item-left>
+      <button ion-button clear (click)=getMyLocation()>
+        <ion-icon name="pin"></ion-icon>
+        My Location
+      </button>
+    </ion-item>
     <ion-list class="suggestions">
+
+
+
       <ion-item *ngFor="let station of p2_stations">
         <ion-buttons>
-          <button color="dark" ion-button clear full (click)="setvalp2(station.name)" >{{ station.name }}</button>
+          <button color="dark" ion-button clear  (click)="setvalp2(station.station_name)" >{{ station.station_name }}</button>
         </ion-buttons>
       </ion-item>
     </ion-list>

@@ -1,81 +1,38 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons end>
+  <ion-navbar color="secondary">
+    <ion-title>Login</ion-title>
+     <ion-buttons end>
       <button ion-button icon-only (click)="close()"><ion-icon name="close"></ion-icon></button>
     </ion-buttons>
-  </ion-toolbar>
+  </ion-navbar>
 </ion-header>
+<ion-content>
 
+  <ion-row class="login-form">
+    <ion-col>
+      <ion-list inset>
 
-<ion-content padding>
-  <div padding>
-    <ion-segment [(ngModel)]="authPage">
-      <ion-segment-button value="login">
-        LogIn
-      </ion-segment-button>
-      <ion-segment-button value="signup">
-        SignUp
-      </ion-segment-button>
-    </ion-segment>
-  </div>
+        <ion-item>
+          <ion-label><ion-icon name="person"></ion-icon></ion-label>
+          <ion-input [(ngModel)]="username" placeholder="username" type="text"></ion-input>
+        </ion-item>
 
-  <div [ngSwitch]="authPage">
-    <div *ngSwitchCase="'login'">
-      <ion-row>
-        <ion-col>
-          <ion-list>
+        <ion-item>
+          <ion-label><ion-icon name="lock"></ion-icon></ion-label>
+          <ion-input [(ngModel)]="password" placeholder="password" type="password"></ion-input>
+        </ion-item>
 
-            <ion-item>
+      </ion-list>
 
-              <ion-input type="email" placeholder="Email" [(ngModel)]="email"></ion-input>
-            </ion-item>
+      <button ion-button full (click)="login()" color="primary" class="login-button">Login</button>
 
-            <ion-item>
+    </ion-col>
+  </ion-row>
 
-              <ion-input type="password" placeholder="Password" [(ngModel)]="password"></ion-input>
-            </ion-item>
+  <ion-row>
+    <ion-col>
+      <button ion-button (click)="launchSignup()" class="create-account">Create an Account</button>
+    </ion-col>
+  </ion-row>
 
-          </ion-list>
-        </ion-col>
-      </ion-row>
-
-      <ion-row>
-        <ion-col>
-          <button class="auth-button" ion-button (click)="doLogin()">
-            LogIn
-          </button>
-        </ion-col>
-      </ion-row>
-
-    </div>
-
-    <div *ngSwitchCase="'signup'">
-
-      <ion-row>
-        <ion-col>
-          <ion-list>
-            <ion-item>
-              <ion-input type="text" placeholder="Name" [(ngModel)]="name"></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-input type="email" placeholder="Email" [(ngModel)]="email"></ion-input>
-            </ion-item>
-
-            <ion-item>
-              <ion-input type="password" placeholder="Password" [(ngModel)]="password"></ion-input>
-            </ion-item>
-
-          </ion-list>
-        </ion-col>
-      </ion-row>
-
-      <ion-row>
-        <ion-col>
-          <button class="auth-button" ion-button (click)="doRegister()">
-            SignUp
-          </button>
-        </ion-col>
-      </ion-row>
-    </div>
-  </div>
 </ion-content>

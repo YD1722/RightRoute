@@ -3,11 +3,12 @@ import { Http,Headers,RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/Rx';
+import {Auth} from '../providers/auth';
 
 @Injectable()
 export class Review {
 
-  constructor(public http: Http) {
+  constructor(public http: Http,private authService:Auth) {
   }
 /*
   addReview(id:string ,review:any){
@@ -20,11 +21,14 @@ export class Review {
       .catch(this.handleError);
   }*/
 
-  private headers = new Headers({'Content-Type': 'application/json'});
+
+
   addReview(review:any): Promise<any> {
+    let headers = new Headers({'Content-Type': 'application/json'});
+    headers.append('Authorization', this.authService.token);
     const url = 'http://localhost:8080/api/reviews';
     return this.http
-      .post(url,JSON.stringify(review), {headers: this.headers})
+      .post(url,JSON.stringify(review), {headers: headers})
       .toPromise()
       .then(res => res.json())
       .catch(this.handleError);

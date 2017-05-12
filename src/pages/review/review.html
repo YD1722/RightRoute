@@ -9,6 +9,10 @@
   </ion-toolbar>
 </ion-header>
 
+
+
+
+
 <ion-content>
   <!--<div  *ngIf="searchQuery">
     <ion-list class="suggestions">
@@ -20,10 +24,8 @@
     </ion-list>
   </div>
 -->
-  <ion-list no-lines>
-
+<!-- <ion-list no-lines>
     <ion-item-sliding *ngFor="let review of reviews">
-
       <ion-item>
 
         <p>{{review.description}}</p>
@@ -33,16 +35,28 @@
         {{review.rating}}
 
       </ion-item>
-
-      <!--male this a like button-->
-      <!--<ion-item-options>
         <button ion-button color="danger" (click)="deleteReview(review)">
           <ion-icon name="trash"></ion-icon>
           Delete
         </button>
-      </ion-item-options>-->
+      </ion-item-options>
     </ion-item-sliding>
 
-  </ion-list>
+</ion-list> -->
+
+<ion-card (press)="pressEvent($event)" *ngFor="let review of reviews">
+<ion-item>
+    <ion-avatar item-left>
+    <ion-icon *ngIf="review.rating < 50" danger name="sad"></ion-icon>
+    <ion-icon *ngIf="review.rating >= 50" secondary name="happy"></ion-icon>
+    </ion-avatar>
+    {{review.rating}}
+    <h2>{{review.user}}</h2>
+    <p>{{review.created_at}}</p>
+  </ion-item>
+  <ion-card-content>
+    <p>{{review.description}}</p>
+  </ion-card-content>  
+</ion-card>>
 
 </ion-content>

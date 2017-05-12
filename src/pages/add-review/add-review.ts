@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams,ViewController,AlertController } from 'ionic-angular';
-import { Auth, User } from '@ionic/cloud-angular';
+//import { Auth, User } from '@ionic/cloud-angular';
+import {Auth} from '../../providers/auth';
 import {Review} from '../../providers/review';
-
+import{HomePage} from '../../pages/home/home';
+import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 @Component({
   selector: 'page-add-review',
   templateUrl: 'add-review.html'
@@ -10,20 +12,19 @@ import {Review} from '../../providers/review';
 export class AddReviewPage {
   routeNo: any;
   description: any;
-  rating: any;
+  rating: any=0;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,public viewCtrl:ViewController,
-              public user:User, public auth:Auth,private reviewService:Review,private alertCtrl:AlertController) {}
+              public auth:Auth,private reviewService:Review,private alertCtrl:AlertController) {}
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ReviewPage');
+    //root information must be taken her
   }
 
   save(): void {
     let review = {
       description: this.description,
       rating: this.rating,
-      user:this.user.details.email,
       routeNo:this.routeNo
     };
     console.log(review);
@@ -34,13 +35,16 @@ export class AddReviewPage {
       buttons:['OK']
     });
     alert.present();
-    this.viewCtrl.dismiss(review);
+    this.navCtrl.setRoot(HomePage);
+    //this.viewCtrl.dismiss(review);
+
 
 
   }
 
   close(): void {
-    this.viewCtrl.dismiss();
+    this.navCtrl.setRoot(HomePage);
+    //this.viewCtrl.dismiss();
   }
 
 }
