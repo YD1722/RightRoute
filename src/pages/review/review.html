@@ -1,62 +1,100 @@
-<ion-header>
-  <ion-toolbar transparent>
-   <!-- <div class="route-search">
-      <ion-searchbar placeholder="Enter Route Number (eg:100)" (input)="getItems($event)"></ion-searchbar>
-    </div>-->
-    <ion-buttons end>
+<!-- <ion-header>
+  <ion-navbar color="dark">
+        <ion-title>
+          User Reviews
+        </ion-title>
+    <ion-buttons right>
       <button ion-button icon-only (click)="close()"><ion-icon name="close"></ion-icon></button>
     </ion-buttons>
+  </ion-navbar>
+</ion-header>
+   
+<ion-content>
+  <ion-card *ngFor="let review of reviews">
+
+  <ion-item>
+      <ion-avatar item-left>
+      <img src="https://api.adorable.io/avatars/75/{{review.user}}">
+      </ion-avatar>
+      <h2>{{review.user}}</h2>
+      <p>{{review.created_at}}</p>
+      <ion-badge item-right>{{review.rating}}</ion-badge>
+  </ion-item>
+    <ion-card-content>
+      <p>{{review.description}}</p>
+    </ion-card-content>  
+  </ion-card>
+</ion-content>
+ -->
+ <ion-header>
+  <ion-navbar color="dark" no-border-bottom>
+    <ion-title text-align="centre">
+      Reviews
+    </ion-title>
+    <ion-buttons right>
+      <button ion-button icon-only (click)="close()"><ion-icon name="close"></ion-icon></button>
+    </ion-buttons>
+  </ion-navbar>
+
+  <ion-toolbar no-border-top>
+    <ion-segment [(ngModel)]="review">
+      <ion-segment-button value="user_reviews">
+        User Reviews
+      </ion-segment-button>
+      <ion-segment-button value="my_reviews">
+        My Reviews
+      </ion-segment-button>
+    </ion-segment>
   </ion-toolbar>
 </ion-header>
 
-
-
-
-
 <ion-content>
-  <!--<div  *ngIf="searchQuery">
-    <ion-list class="suggestions">
-      <ion-item *ngFor="let item of items">
-        <ion-buttons>
-          <button color="dark" ion-button clear full (click)="searchBus(item.name)">{{ item.name }}</button>
-        </ion-buttons>
+  <div [ngSwitch]="review">
+    <ion-list *ngSwitchCase="'user_reviews'">
+
+      <ion-card *ngFor="let review of reviews">
+
+      <ion-item>
+      <ion-avatar item-left>
+      <img src="https://api.adorable.io/avatars/75/{{review.user}}">
+      </ion-avatar>
+      <h2>{{review.user}}</h2>
+      <p>{{review.created_at}}</p>
+      <ion-badge item-right>{{review.rating}}</ion-badge>
+      </ion-item>
+    <ion-card-content>
+      <p>{{review.description}}</p>
+    </ion-card-content>  
+    </ion-card>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'my_reviews'">
+      <ion-item>
+        <ion-thumbnail item-start>
+          <img src="assets/img/thumbnail-kitten-1.jpg">
+        </ion-thumbnail>
+        <h2>Luna</h2>
+      </ion-item>
+      <ion-item>
+        <ion-thumbnail item-start>
+          <img src="assets/img/thumbnail-kitten-3.jpg">
+        </ion-thumbnail>
+        <h2>Milo</h2>
+      </ion-item>
+      <ion-item>
+        <ion-thumbnail item-start>
+          <img src="assets/img/thumbnail-kitten-4.jpg">
+        </ion-thumbnail>
+        <h2>Bandit</h2>
+      </ion-item>
+      <ion-item>
+        <ion-thumbnail item-start>
+          <img src="assets/img/thumbnail-kitten-2.jpg">
+        </ion-thumbnail>
+        <h2>Nala</h2>
       </ion-item>
     </ion-list>
+
+    
   </div>
--->
-<!-- <ion-list no-lines>
-    <ion-item-sliding *ngFor="let review of reviews">
-      <ion-item>
-
-        <p>{{review.description}}</p>
-
-        <ion-icon *ngIf="review.rating < 50" danger name="sad"></ion-icon>
-        <ion-icon *ngIf="review.rating >= 50" secondary name="happy"></ion-icon>
-        {{review.rating}}
-
-      </ion-item>
-        <button ion-button color="danger" (click)="deleteReview(review)">
-          <ion-icon name="trash"></ion-icon>
-          Delete
-        </button>
-      </ion-item-options>
-    </ion-item-sliding>
-
-</ion-list> -->
-
-<ion-card (press)="pressEvent($event)" *ngFor="let review of reviews">
-<ion-item>
-    <ion-avatar item-left>
-    <ion-icon *ngIf="review.rating < 50" danger name="sad"></ion-icon>
-    <ion-icon *ngIf="review.rating >= 50" secondary name="happy"></ion-icon>
-    </ion-avatar>
-    {{review.rating}}
-    <h2>{{review.user}}</h2>
-    <p>{{review.created_at}}</p>
-  </ion-item>
-  <ion-card-content>
-    <p>{{review.description}}</p>
-  </ion-card-content>  
-</ion-card>>
-
 </ion-content>

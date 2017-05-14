@@ -1,7 +1,9 @@
 <ion-header>
 
-  <ion-navbar >
-    <ion-title>{{station.station_name}}</ion-title>
+  <ion-navbar color="dark">
+
+    <ion-title *ngIf="locate_stat">{{station.station_name}}</ion-title>
+    <ion-title *ngIf="!locate_stat">My Location</ion-title>
     <ion-buttons end>
       <button ion-button (click)="closeModal()" icon-only><ion-icon name="close"></ion-icon></button>
     </ion-buttons>
@@ -11,23 +13,45 @@
 
 
 <ion-content>
-  <ion-card #map id="map">
 
-    <ion-fab right top>
-      <button ion-fab>
-        <ion-icon name="pin"></ion-icon>
-      </button>
-    </ion-fab>
+
+  
+  <ion-card #map id="map">
+   
+  
   </ion-card>
 
-  <ion-card>
+  
+    <ion-list >
+    <ion-list-header>
+    <ion-icon name="bus" item-left small></ion-icon>
+      busses from {{station.station_name}}
+
+      <!-- <ion-item>
+        where am I?
+      <button ion-button outline item-right icon-left>
+      <ion-icon name="locate"></ion-icon>
+      Left Icon
+      </button>
+      </ion-item> -->
+      <button *ngIf="locate_stat" color="danger" (click)="getMyLocation()" item-right ion-button icon-left>
+        <ion-icon name="locate"></ion-icon>
+          My Location
+      </button>
+
+      <button *ngIf="!locate_stat" (click)="getStationLocation()" item-right ion-button icon-left>
+        <ion-icon name="home"></ion-icon>
+          Station
+      </button>
 
 
-    <ion-item>
-      <ion-icon name="football" item-left large></ion-icon>
-      <h2>{{station.station_name}}</h2>
+    </ion-list-header> 
+
+    <ion-item *ngFor="let bus of bus_routes">
+      {{bus.name+"  "+ bus.start+" / "+bus.end}} 
     </ion-item>
 
+    </ion-list>
 
-  </ion-card>
+
 </ion-content>

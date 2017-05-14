@@ -2,7 +2,10 @@ import {NavController,ViewController, ModalController, LoadingController,AlertCo
 import { Component } from '@angular/core';
 import {LoginPage} from '../../pages/login/login';
 import {Auth} from '../../providers/auth';
+import {AboutPage} from '../../pages/about/about';
+
 @Component({
+  selector: 'popover-page',
   templateUrl:'./popover.html'
 
 })
@@ -62,6 +65,10 @@ export class PopoverPage {
     })
     
     
+  }
+
+  aboutUs(){
+    this.navCtrl.push(AboutPage);
   }
 
   showLoader(){

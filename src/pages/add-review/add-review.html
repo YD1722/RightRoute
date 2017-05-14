@@ -14,7 +14,7 @@
 <form #Form="ngForm" (ngSubmit)="save()" >
     <ion-item>
       <ion-label floating>Route Number</ion-label>
-      <ion-input [(ngModel)]="routeNo" type="text" [ngModelOptions]="{standalone: true}" required></ion-input>
+      <ion-input readonly [(ngModel)]="routeNo" type="text" [ngModelOptions]="{standalone: true}" required></ion-input>
     </ion-item>
     <ion-item>
       <ion-label floating>Review</ion-label>

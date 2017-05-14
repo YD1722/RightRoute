@@ -1,20 +1,27 @@
 <ion-header>
-
-  <ion-navbar >
+  <ion-navbar color="dark">
     <ion-title>
-      <ion-item>
-        <ion-icon small name="bus" item-left></ion-icon>
-          {{root.name}}
-        <ion-badge item-right>{{root.path[0]}}-{{root.path[root.path.length-1]}}</ion-badge>
+      <ion-item class="header-item">
+        <ion-badge>
+        {{root.name}}
+        </ion-badge>
+        <ion-badge>{{root.start}}-{{root.end}}</ion-badge>
       </ion-item>
     </ion-title>
-
   </ion-navbar>
-
 </ion-header>
 
-
 <ion-content>
+
+    <ion-fab right bottom>
+    <button ion-fab color="light"><ion-icon name="share"></ion-icon></button>
+    <ion-fab-list side="left">
+      <button ion-fab><ion-icon name="logo-facebook"></ion-icon></button>
+      <button (click)="wtzAppShare()" ion-fab><ion-icon name="logo-whatsapp"></ion-icon></button>
+      <button ion-fab><ion-icon name="chatboxes"></ion-icon></button>
+    </ion-fab-list>
+  </ion-fab>
+
   <ion-card #map id="map">
     <div *ngIf="mapNotLoaded">
       <img src="http://placehold.it/350x150">
@@ -24,16 +31,14 @@
       </button>
     </ion-fab>
     </div>
-
-
-    <div *ngIf="mapLoaded">
-      <ion-fab right top>
-        <button (click)="getMylocation()" ion-fab>
-          <ion-icon name="pin"></ion-icon>
-        </button>
-      </ion-fab>
-    </div>
   </ion-card>
+
+  <ion-list>
+    <ion-item>
+      <ion-label>where am I?</ion-label>
+      <ion-toggle [(ngModel)]="isToggled" (ionChange)="notify()"></ion-toggle>
+    </ion-item>
+  </ion-list> 
 
   <!-- <ion-card>
 
@@ -50,8 +55,23 @@
       </ion-grid>
     </ion-item>
   </ion-card> -->
+  <ion-card>
+  <ion-card-header>
+  Route Detail
+  </ion-card-header>
+  <ion-item>
+    <ion-grid>
+      <ion-row *ngFor="let row of gridPath">
+        <ion-col col-sm-3 *ngFor="let station of row">
+          <ion-badge class="success">{{station}}</ion-badge>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-item>
 
-  <ion-list *ngFor="let station of path" >
+  </ion-card>
+
+  <!-- <ion-list *ngFor="let station of path" >
   <ion-item-sliding>
     <ion-item>
       <ion-avatar item-left>
@@ -66,17 +86,24 @@
       </button>
     </ion-item-options>
   </ion-item-sliding>
-</ion-list>
+</ion-list> -->
+<ion-item>
+<ion-grid>
+  <ion-row>
+    <ion-col>
+      <button small color="dark" ion-button (click)="showReview()" icon-left  round>
+          reviews
+        <ion-icon name="search"></ion-icon>
+      </button>
+    </ion-col>
+    <ion-col>
+      <button small color="success" ion-button icon-left (click)="showAddReview()" round>
+        add Review
+      <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+</ion-item>
 
-  <ion-item>
-  <button ion-button (click)="showReview()" icon-left item-left round>
-    show Review
-    <ion-icon name="search"></ion-icon>
-  </button>
-
-  <button ion-button icon-left item-right (click)="showAddReview()" round>
-  add Review
-  <ion-icon name="add"></ion-icon>
-</button>
-  </ion-item>
 </ion-content>

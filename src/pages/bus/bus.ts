@@ -13,34 +13,42 @@ import {Routes} from '../../providers/routes';
 })
 export class BusPage {
 
-  searchQuery: string=null ;
+  searchQuery: string;
   items:any=[];
 
   constructor(public http:Http,public loadCtrl:LoadingController,public navCtrl:NavController,
   public modalCtrl:ModalController,  public routeService:Routes) {
 
-    this.initializeItems();
+    //this.initializeItems();
     }
 
-  initializeItems() {
+  /*initializeItems() {
     this.items=this.routeService.getRoutes();
-  }
+  }*/
 
 //search function dropdown
   getItems(ev: any) {
-
-  // Reset items back to all of the items
-  this.initializeItems();
-
-  // set val to the value of the searchbar
   let val = ev.target.value;
   this.searchQuery= val;
+  if(val && val.trim() != '') {
+      this.routeService.getTest(this.searchQuery).subscribe(
+        routes => this.items = routes
+      );
+    }else{
+      this.items=[];
+    }
+  // Reset items back to all of the items
+  //this.initializeItems();
+
+  // set val to the value of the searchbar
+  //let val = ev.target.value;
+  //this.searchQuery= val;
   // if the value is an empty string don't filter the items
-  if (val && val.trim() != '') {
+  /*if (val && val.trim() != '') {
     this.items = this.items.filter((item) => {
       return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
     })
-  }
+  }*/
 }
 
   searchBus(item:any){  // passing type string ?? have a look here
@@ -58,6 +66,7 @@ export class BusPage {
     });
 
   }
+
 
   /*searchBusRoute(item) {
 

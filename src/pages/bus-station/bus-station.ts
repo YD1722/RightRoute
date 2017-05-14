@@ -27,9 +27,10 @@ export class BusStationPage implements OnInit{
   }
 
   ngOnInit(){
-    this.initStations();
-    console.log("station page",this.stations);
+    //this.initStations();
+    //console.log("station page",this.stations);
   }
+
   initMap(){
     this.notLoadMap=null;
     this.loadMap='loaded';
@@ -49,19 +50,29 @@ export class BusStationPage implements OnInit{
 
 
   showStations(ev: any) {
-      this.initStations();
+     //this.initStations();
     // Reset items back to all of the items
     //removed arry initialisation
 
     // set val to the value of the searchbar
+
+    /*if(val && val.trim() != '') {
+      this.routeService.getTest(this.searchQuery).subscribe(
+        routes => this.items = routes
+      );
+    }else{
+      this.items=[];
+    }*/
+
     let val = ev.target.value;
     this.searchQuery= val;
     // if the value is an empty string don't filter the items
     if (val && val.trim() != '') {
-      this.stations = this.stations.filter((item) => {    // error handle must needed here
-        //console.log(item.station_name);
-        return (item.station_name.toLowerCase().indexOf(val.toLowerCase()) > -1);
-      });
+      this.stationService.getTest(this.searchQuery).subscribe(
+          stations=> this.stations=stations
+        );
+    }else{
+      this.stations=[];
     }
   };
 

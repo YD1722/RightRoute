@@ -61,38 +61,74 @@
     <ion-list-header>
       Directed Routes- Suggestions
     </ion-list-header>
+
   <ion-card class="directed-route"tappable (click)="showDirectRoute(root)" *ngFor="let root of availableRoutes">
     <ion-item>
       <ion-avatar item-left>
         <h1>D</h1>
       </ion-avatar>
-      <h2>Route No: {{root.name}} / {{root.path[0]}}-{{root.path[root.path.length-1]}}</h2>
+      <h2>Route No: {{root.name}} / {{root.start}}-{{root.end}}</h2>
     </ion-item>
   </ion-card>
   </ion-list>
+
+
   <!--show connected routes-->
 
 
   <ion-list>
     <ion-list-header>
-      Connected Routes
+      Connected Routes - Suggestions
     </ion-list-header>
-  <ion-card class="connected-route" *ngFor="let root of connected_routes">
+
+    <ion-card *ngFor="let root of connected_routes">
+    
+    <ion-card-header>
+        
+    </ion-card-header>
+
+    <ion-list>
     <ion-item>
-      <ion-avatar item-left>
-        <h1>C</h1>
-      </ion-avatar>
+      <ion-icon name="bus" item-left></ion-icon>
+      <ion-badge color="dark">{{root.n1}}</ion-badge>
     </ion-item>
 
-    <img class="header" src="http://placehold.it/500x100"/>
-    <p class="root-title">{{root.r1_list}}</p>
-    <label>Connecting point:</label>
-    <p class="root-title">{{root.con}}</p>
-    <p class="root-title">{{root.r2_list}}</p>
+    <ion-item>
+    <ion-grid>
+      <ion-row *ngFor="let row of root.r1_list">
+        <ion-col col-md-3 *ngFor="let station of row">
+          <ion-badge>{{station}}</ion-badge>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    </ion-item>
 
+    <ion-item>
+      <ion-icon color="danger" name="hand" item-left></ion-icon>
+      <div class="subtitle">connecting station</div>
+      <ion-badge color="dark">{{root.con}}</ion-badge>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon name="bus" item-left></ion-icon>
+      <ion-badge color="dark">{{root.n2}}</ion-badge>
+    </ion-item>
+
+    <ion-item>
+    <ion-grid>
+      <ion-row *ngFor="let row of root.r2_list">
+        <ion-col col-md-3 *ngFor="let station of row">
+          <ion-badge>{{station}}</ion-badge>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    </ion-item>
+    </ion-list>
 
   </ion-card>
   </ion-list>
+
+
 </div>
 
 

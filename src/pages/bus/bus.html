@@ -11,7 +11,8 @@
   <ion-list class="suggestions">
     <ion-item *ngFor="let item of items">
       <ion-buttons>
-      <button color="dark" ion-button clear full (click)="searchBus(item.name)">{{ item.name }}</button>
+      <button color="dark" ion-button clear full (click)="searchBus(item.name)">
+      {{ item.name+"    "+ item.start +"/"+ item.end }}</button>
       </ion-buttons>
     </ion-item>
   </ion-list>

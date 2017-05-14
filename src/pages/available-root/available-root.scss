@@ -1,16 +1,16 @@
 page-available-root {
 
  .search-routes{
-   background-color:#4DF266     ;
+   background-color:#4DF266 ;
    height:80%;
  }
 
   .search-routes ion-list{
-    background-color:#4DF266    ;
+    background-color:#4DF266 ;
   }
 
   .search-routes ion-list ion-item{
-    background-color: #4DF266    ;
+    background-color: #4DF266 ;
   }
   .search-area ion-item ion-input{
     width: 80%;
@@ -22,4 +22,31 @@ page-available-root {
   .directed-route{
     background-color: azure;
   }
+
+  ion-card {
+    background-color: map-get($colors, dark);
+    position: relative;
+    text-align: center;
+    margin: 0;
+    width: 100%;
+  }
+
+  ion-card-header{
+    background-color: azure;
+  }
+ 
+  .card-title-container {
+      position: absolute;
+      top: 40%;
+      width: 100%;
+  }
+
+  .card-title {
+      font-size: 1.5em;
+      text-transform: capitalize;
+      font-weight: bold;
+      display: inline;
+      color: #fff;
+  }
+
 }

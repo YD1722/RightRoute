@@ -4,19 +4,21 @@ import { MyApp } from './app.component';
 import {IonicStorageModule} from '@ionic/storage';
 import {HttpModule} from '@angular/http';
 import { Geolocation } from '@ionic-native/geolocation';
+import { SocialSharing } from '@ionic-native/social-sharing';
 
 import { HomePage } from '../pages/home/home';
 import {BusPage} from '../pages/bus/bus';
 import {AvailableRootPage} from '../pages/available-root/available-root';
 import {BusStationPage} from '../pages/bus-station/bus-station';
-import { TranslateModule } from 'ng2-translate/ng2-translate';
+import {TranslateModule } from 'ng2-translate/ng2-translate';
 import {TestPage} from '../pages/test/test';
 import {ReviewPage} from '../pages/review/review';
 import {StationModalPage} from '../pages/station-modal/station-modal';
 import {LoginPage} from '../pages/login/login';
 import {AddReviewPage} from '../pages/add-review/add-review';
-import { SignupPage} from '../pages/signup/signup';
-import {PopoverPage} from '../pages/popover/popover';  
+import {SignupPage} from '../pages/signup/signup';
+import {PopoverPage} from '../pages/popover/popover';
+import {AboutPage} from '../pages/about/about'; 
 
 import {FormsModule} from '@angular/forms';
 import { Ng2CompleterModule } from "ng2-completer";
@@ -26,6 +28,7 @@ import {AppService} from '../providers/app';
 import {Review} from '../providers/review';
 import{Auth} from '../providers/auth';
 import {Location} from '../providers/location'; // is this really needed?
+import {user} from '../providers/user';
 
 import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 
@@ -47,7 +50,8 @@ const cloudSettings: CloudSettings = {
     LoginPage,
     AddReviewPage,
     SignupPage,
-    PopoverPage
+    PopoverPage,
+    AboutPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -71,8 +75,10 @@ const cloudSettings: CloudSettings = {
     LoginPage,
     AddReviewPage,
     SignupPage,
-    PopoverPage
+    PopoverPage,
+    AboutPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},Routes,Station,AppService,Review,Auth,Geolocation,Location]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},
+  Routes,Station,AppService,Review,Auth,Geolocation,Location,SocialSharing,user]
 })
 export class AppModule {}

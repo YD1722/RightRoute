@@ -5,12 +5,16 @@ page-test {
     height:65%;
     width:100%;
   }
-  
-  ion-header{
+
+  .station-button{
+  }
+
+  ion-card-header{
   	background-color:#4DF266;
   }
 
-  .station-button{
+  .header-item{
+  	background-color: transparent;
   }
 
 

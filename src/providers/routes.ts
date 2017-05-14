@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
-import 'rxjs/add/operator/map';
+import { Http,Response, Headers,RequestOptions} from '@angular/http';
+
 import {BusRoutes} from '../mockData/BusRoutes';
+import 'rxjs/add/operator/toPromise';
+import {Observable} from 'rxjs/Rx';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/map';
 
 /*
   Generated class for the Routes provider.
@@ -58,5 +62,39 @@ export class Routes {
 
     });
   }
+
+  testUrl='http://localhost:8080/api/routeList';
+
+  getTest(searchStr:string):Observable<any[]>{  // make this route type :D
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.post(this.testUrl,{name:searchStr},options)  
+      .map((res: Response) => res.json())
+      .catch(this.handleError);
+  }
+
+  
+  find_busses_from(station_name:String):Observable<any[]>{
+    return this.http.get(`http://localhost:8080/api/route/${station_name}`)  
+      .map((res: Response) => res.json())
+      .catch(this.handleError);
+  }
+
+  private handleError (error: Response | any) {
+    // In a real world app, you might use a remote logging infrastructure
+    let errMsg: string;
+    if (error instanceof Response) {
+      const body = error.json() || '';
+      const err = body.error || JSON.stringify(body);
+      errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+    } else {
+      errMsg = error.message ? error.message : error.toString();
+    }
+    console.error(errMsg);
+    return Observable.throw(errMsg);
+  }
+
 
 }

@@ -60,18 +60,18 @@ export class AvailableRootPage {
       //case 2- connected  busses=======================================
       else{
         for(let route of <any>data){
-          console.log("routes: ",route.path);
+          //console.log("routes: ",route.path);
           if(route.path.includes(p1)){
             p1_list.push(route);
-            console.log(p1," ",route.path);
+            //console.log(p1," ",route.path);
           }else if(route.path.includes(p2)){
             p2_list.push(route);
-            console.log(p2," ",route.path);
+            //console.log(p2," ",route.path);
           }
         }
       }
 
-      let connected_routes:Object[]=[];
+      let connected_routes_1:Object[]=[];
       p1_list.forEach(function(elem1){
         p2_list.forEach(function(elem2){
           // find intersection between two arrays
@@ -90,16 +90,19 @@ export class AvailableRootPage {
           //connected_routes.push(connected_route);
 
           //let route_details  = this.makeData(connected_route);
-          connected_routes.push(connected_route);
+          connected_routes_1.push(connected_route);
         })
       });
 
-      for(let route of connected_routes){
+
+      for(let route of connected_routes_1){
         //console.log("hey__",route);
         this.connected_routes.push(this.makeData(route));
       }
-      }
-    )}
+
+      });
+    //console.log(this.connected_routes);
+  }
 
   //database access==================================================
   findBusRoutes(){
@@ -111,11 +114,12 @@ export class AvailableRootPage {
 
 // mae data method use to mmake data in a user friendly way to show connected bus routes
   makeData(connected_route:any){  // return any ??
-
-    console.log("hey there");
-
     let r1= connected_route.in_.path;
     let r2= connected_route.out_.path;
+
+    let n1= connected_route.in_.name;
+    let n2=connected_route.out_.name;
+
     let con= connected_route.con;
     let p1=connected_route.p1;
     let p2=connected_route.p2;
@@ -127,8 +131,8 @@ export class AvailableRootPage {
 
     //expect(c_p1).toEqual(2);
 
-    let r1_list:any=[];
-    let r2_list:any=[];
+    let r1_list:any=[];  // consistes one half of the route
+    let r2_list:any=[];  // consist another half of the route
     //let con_list:any=[con];
 
     //case 1
@@ -145,12 +149,47 @@ export class AvailableRootPage {
     }else if(p2_>c_p2){
       r2_list=this.seekArrayRight(r2,c_p2,p2_);
     }
+    
+
+    let r1_grid_list:any=this.makeDataMoreReadable(r1_list);
+    let r2_grid_list:any=this.makeDataMoreReadable(r2_list);
+
     let route_details:any={
-        r1_list:r1_list,
+        n1:n1, // n stands for number of the bus
+        n2:n2,
+        r1_list:r1_grid_list,
         con:con,
-        r2_list:r2_list
+        r2_list:r2_grid_list
     }
-    return(route_details);
+   
+   console.log(route_details);
+   return(route_details);
+ 
+  }
+
+
+  makeDataMoreReadable(r1_list:any){
+    let r1_grid_list:any=[]; // list of arrays
+
+    let rowNum=0;
+    for (let i = 0; i < r1_list.length; i+=3) { //iterate images
+
+    r1_grid_list[rowNum] = Array(3); //declare two elements per row
+
+    if (r1_list[i]) { //check file URI exists
+      r1_grid_list[rowNum][0] = r1_list[i] //insert image
+    }
+
+    if (r1_list[i+1]) { //repeat for the second image
+      r1_grid_list[rowNum][1] = r1_list[i+1]
+    }
+    if (r1_list[i+2]) { //repeat for the second image
+      r1_grid_list[rowNum][2] = r1_list[i+2]
+    }
+
+      rowNum++; //go on to the next row
+  }
+  return r1_grid_list;
   }
 
 
