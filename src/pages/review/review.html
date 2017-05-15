@@ -37,7 +37,7 @@
   </ion-navbar>
 
   <ion-toolbar no-border-top>
-    <ion-segment [(ngModel)]="review">
+    <ion-segment [(ngModel)]="review" (ionChange)="notify()">
       <ion-segment-button value="user_reviews">
         User Reviews
       </ion-segment-button>
@@ -68,31 +68,40 @@
     </ion-card>
     </ion-list>
 
+
+
     <ion-list *ngSwitchCase="'my_reviews'">
+      
+      <ion-card *ngFor="let review of results">
       <ion-item>
-        <ion-thumbnail item-start>
-          <img src="assets/img/thumbnail-kitten-1.jpg">
-        </ion-thumbnail>
-        <h2>Luna</h2>
+      <ion-avatar item-left>
+      <img src="https://api.adorable.io/avatars/12">
+      </ion-avatar>
+      <h2>{{review.user}}</h2>
+      <p>{{review.created_at}}</p>
+      <ion-badge item-right>{{review.rating}}</ion-badge>
       </ion-item>
-      <ion-item>
-        <ion-thumbnail item-start>
-          <img src="assets/img/thumbnail-kitten-3.jpg">
-        </ion-thumbnail>
-        <h2>Milo</h2>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-start>
-          <img src="assets/img/thumbnail-kitten-4.jpg">
-        </ion-thumbnail>
-        <h2>Bandit</h2>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-start>
-          <img src="assets/img/thumbnail-kitten-2.jpg">
-        </ion-thumbnail>
-        <h2>Nala</h2>
-      </ion-item>
+        <ion-card-content>
+          <p>{{review.description}}</p>
+        </ion-card-content> 
+
+        <ion-row>
+          <ion-col>
+
+      <button (click)="delete_review(review)" ion-button icon-left clear small>
+        <ion-icon name="trash"></ion-icon>
+        <div>delete</div>
+      </button>
+    </ion-col>
+    <ion-col>
+      <button (click)="update_review(review)" ion-button icon-left clear small>
+        <ion-icon name="brush"></ion-icon>
+        <div>update</div>
+      </button>
+    </ion-col>
+    </ion-row>
+    </ion-card>
+
     </ion-list>
 
     

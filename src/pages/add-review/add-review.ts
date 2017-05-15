@@ -15,6 +15,9 @@ export class AddReviewPage {
   description: any;
   rating: any=0;
 
+  is_update_req: boolean=false;
+  //route_to_update:any;
+
   constructor(public navCtrl: NavController, public navParams: NavParams,public viewCtrl:ViewController,
               public auth:Auth,private reviewService:Review,private alertCtrl:AlertController,
               private userService:user) {}
@@ -22,6 +25,14 @@ export class AddReviewPage {
   ionViewDidLoad() {
     //root information must be taken her
     this.routeNo= this.navParams.get('route_name');
+    this.is_update_req= this.navParams.get('is_update_req');
+
+    if(this.is_update_req){
+      let rev_to_up= this.navParams.get('review_');
+      this.description= rev_to_up.description;
+      this.rating=rev_to_up.rating;
+      console.log(rev_to_up);
+    };
   }
 
   save(): void {

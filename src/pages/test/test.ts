@@ -148,8 +148,10 @@ export class TestPage {
     //Check if already authenticated
     this.authService.checkAuthentication().then((res) => {
       this.navCtrl.push(AddReviewPage,{
-        route_name:this.root.name
+        route_name:this.root.name,
+        is_update_req:false
       });
+      
       this.loading.dismiss();
     },(err) => {
       let modal=this.modalCtrl.create(LoginPage);
@@ -168,7 +170,7 @@ export class TestPage {
   showReview(){
     this.reviewService.getReview(this.root.name)
       .then(review=>{
-        let modal=this.modalCtrl.create(ReviewPage,{reviews:review[0].reviews});
+        let modal=this.modalCtrl.create(ReviewPage,{reviews:review[0].reviews,route_no:this.root.name});
         modal.present();
       });
   }

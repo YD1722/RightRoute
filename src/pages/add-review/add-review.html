@@ -1,16 +1,21 @@
 <ion-header>
-  <ion-navbar transparent>
-    <ion-title>Add Review</ion-title>
 
- <!--   <button ion-button icon-only (click)="logout()">
-      <ion-icon name="exit"></ion-icon>
-    </button>-->
-
+  <ion-navbar *ngIf="!is_update_req" transparent>
+    <ion-title >Add Review</ion-title>
   </ion-navbar>
+
+   <ion-navbar color="danger" *ngIf="is_update_req" transparent>
+    <ion-title  >Update Review</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="closeModal()" icon-only><ion-icon name="close">
+      </ion-icon>
+    </button>
+    </ion-buttons>
+  </ion-navbar>
+
 </ion-header>
 
 <ion-content>
-
 <form #Form="ngForm" (ngSubmit)="save()" >
     <ion-item>
       <ion-label floating>Route Number</ion-label>
@@ -28,7 +33,10 @@
       </ion-range>
     </ion-item>
     
-  <button ion-button [disabled]="!Form.form.valid || rating === 0" ion-button full color="secondary">Save
+  <button  *ngIf="!is_update_req" ion-button [disabled]="!Form.form.valid || rating === 0" ion-button full color="secondary">Save
+  </button>
+
+  <button  *ngIf="is_update_req" ion-button [disabled]="!Form.form.valid || rating === 0" ion-button full color="danger">Update
   </button>
     
 </form>

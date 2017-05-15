@@ -21,6 +21,7 @@ export class Auth {
         headers.append('Authorization', this.token);
 
         this.http.get('http://localhost:8080/api/auth/protected',{headers:headers})
+        .map(res=>res.json())
           .subscribe(res=>{
             resolve(res);
           },err=>{

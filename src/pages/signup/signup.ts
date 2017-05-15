@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {NavController, LoadingController} from 'ionic-angular';
+import {NavController, LoadingController,ViewController} from 'ionic-angular';
 import { Auth } from '../../providers/auth';
 import { AddReviewPage } from '../add-review/add-review';
 
@@ -16,7 +16,8 @@ export class SignupPage {
   username:string;
   loading:any;
 
-  constructor(public navCtrl: NavController, public authService: Auth, public loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public authService: Auth,
+               public loadingCtrl: LoadingController,private viewCtrl:ViewController) {
 
   }
 
@@ -34,7 +35,8 @@ export class SignupPage {
     this.authService.createAccount(details).then((result) => {
       this.loading.dismiss();
       console.log(result);
-      this.navCtrl.setRoot(AddReviewPage);
+      //this.navCtrl.setRoot(AddReviewPage);
+      this.viewCtrl.dismiss();
     }, (err) => {
       this.loading.dismiss();
     });

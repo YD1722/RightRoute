@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http,Headers,RequestOptions } from '@angular/http';
+import { Http,Headers,RequestOptions,Response } from '@angular/http';
 import 'rxjs/add/operator/map';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/Rx';
@@ -41,6 +41,34 @@ export class Review {
       .then(response => response.json())
       .catch(this.handleError);
   }
+
+  deleteReview(route_no:any,review_id:any): Observable<any[]> {
+
+    // does it really need headers?
+    let headers = new Headers();
+    headers.append('Authorization',this.authService.token);
+    headers.append('Content-Type', 'application/json' );
+    let options = new RequestOptions({ headers: headers });
+
+
+    return this.http.put (`http://localhost:8080/api/reviews/${route_no}/${review_id}`,{},options)
+            .map((res:Response) => res.json()) 
+            .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+
+  /*updateReview(route_no:any,review_id:any):Observable<any[]>{
+    let headers = new Headers();
+    headers.append('Authorization',this.authService.token);
+    headers.append('Content-Type', 'application/json' );
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.put(`http://localhost:8080/api/reviews/${route_no}/${review_id}`,{},options)
+            .map((res:Response) => res.json()) 
+            .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+
+  }*/
+
 
   handleError(error) {
     console.error(error);
